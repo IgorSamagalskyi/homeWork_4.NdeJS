@@ -4,6 +4,10 @@ const {
     EMPTY_FIELDS,
     CAR_NOT_FOUND
 } = require('../config/messages');
+const {
+    BAD_REQUEST,
+    NOT_FOUND
+} = require('../config/statusСodes');
 
 module.exports = {
     isCarValid: (req, res, next) => {
@@ -15,7 +19,7 @@ module.exports = {
             } = req.body;
 
             if (!model || !year || !price) {
-                throw new ErrorHandler(400, EMPTY_FIELDS);
+                throw new ErrorHandler(BAD_REQUEST, EMPTY_FIELDS);
             }
 
             next();
@@ -31,7 +35,7 @@ module.exports = {
             const currentUser = await CarsModel.findById(car_id);
 
             if (!currentUser) {
-                throw new ErrorHandler(404, CAR_NOT_FOUND);
+                throw new ErrorHandler(NOT_FOUND, CAR_NOT_FOUND);
             }
 
             next();

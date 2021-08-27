@@ -5,6 +5,11 @@ const {
     EMAIL_EXIST,
     USER_NOT_FOUND
 } = require('../config/messages');
+const {
+    BAD_REQUEST,
+    UNAUTHORIZED_ERROR,
+    NOT_FOUND
+} = require('../config/statusСodes');
 
 module.exports = {
     isEmail: async (req, res, next) => {
@@ -14,7 +19,7 @@ module.exports = {
             const isEmailExist = await UserModel.findOne({ email });
 
             if (isEmailExist) {
-                throw new ErrorHandler(401, EMAIL_EXIST);
+                throw new ErrorHandler(UNAUTHORIZED_ERROR, EMAIL_EXIST);
             }
 
             next();
@@ -31,7 +36,7 @@ module.exports = {
             } = req.body;
 
             if (!name || !email) {
-                throw new ErrorHandler(400, EMPTY_FIELDS);
+                throw new ErrorHandler(BAD_REQUEST, EMPTY_FIELDS);
             }
 
             next();
@@ -47,7 +52,7 @@ module.exports = {
             const currentUser = await UserModel.findById(user_id);
 
             if (!currentUser) {
-                throw new ErrorHandler(404, USER_NOT_FOUND);
+                throw new ErrorHandler(NOT_FOUND, USER_NOT_FOUND);
             }
 
             next();
