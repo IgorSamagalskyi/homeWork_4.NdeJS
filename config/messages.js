@@ -1,6 +1,4 @@
 module.exports = {
-    INCORRECT_PRICE: 'Incorrect price',
-
     CAR_NOT_FOUND: 'Car not found',
     USER_NOT_FOUND: 'User not found',
     EMPTY_FIELDS: 'All fields must be filled in!',
