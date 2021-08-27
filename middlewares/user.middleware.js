@@ -55,6 +55,7 @@ module.exports = {
                 throw new ErrorHandler(NOT_FOUND, USER_NOT_FOUND);
             }
 
+            req.user = currentUser;
             next();
         } catch (e) {
             next(e);

@@ -3,7 +3,6 @@ const { carServices } = require('../services');
 const {
     createNewCar,
     readAllCars,
-    currentCar,
     updateCar,
     deleteCar
 } = carServices;
@@ -29,11 +28,12 @@ module.exports = {
         }
     },
 
-    getCarId: async (req, res) => {
-        const { car_id } = req.params;
-
-        const getCurrentCar = await currentCar(car_id);
-        res.json(getCurrentCar);
+    getCarId: (req, res, next) => {
+        try {
+            res.json(req.car);
+        } catch (e) {
+            next(e);
+        }
     },
 
     updateCar: async (req, res, next) => {

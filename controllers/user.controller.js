@@ -4,7 +4,6 @@ const { UPDATED_USER, DELETED_USER } = require('../config/messages');
 const {
     createNewUser,
     readAllUsers,
-    currentUser,
     updateUser,
     deleteUser
 } = userServices;
@@ -30,11 +29,12 @@ module.exports = {
         }
     },
 
-    getUserId: async (req, res) => {
-        const { user_id } = req.params;
-
-        const getCurrentUser = await currentUser(user_id);
-        res.json(getCurrentUser);
+    getUserId: (req, res, next) => {
+        try {
+            res.json(req.user);
+        } catch (e) {
+            next(e);
+        }
     },
 
     updateUser: async (req, res, next) => {

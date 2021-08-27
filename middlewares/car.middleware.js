@@ -32,12 +32,13 @@ module.exports = {
         try {
             const { car_id } = req.params;
 
-            const currentUser = await CarsModel.findById(car_id);
+            const currentCar = await CarsModel.findById(car_id);
 
-            if (!currentUser) {
+            if (!currentCar) {
                 throw new ErrorHandler(NOT_FOUND, CAR_NOT_FOUND);
             }
 
+            req.car = currentCar;
             next();
         } catch (e) {
             next(e);
