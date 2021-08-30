@@ -7,5 +7,5 @@ module.exports = {
     DELETED_USER: 'Deleted user',
     EMAIL_OR_PASSWORD_WRONG: 'email or password is wrong',
     FORM: 'registration form',
-    NO_SUCH_EMAIL: 'there is no such email'
+    WRONG_PASSWORD_OR_EMAIL: 'wrong email or password'
 };

@@ -11,6 +11,9 @@ const mongoose = require('mongoose');
 const app = express();
 
 const { PORT, MONGODB_PORT } = require('./config/variables');
+const {
+   NOT_FOUND
+} = require('./config/statusСodes');
 
 mongoose.connect(MONGODB_PORT);
 
@@ -41,7 +44,7 @@ app.listen(PORT, () => {
 function _notFoundError(err, req, res, next) {
     next({
         status: err.status || 404,
-        message: err.message || 'Not found'
+        message: err.message || NOT_FOUND
     });
 }
 

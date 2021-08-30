@@ -3,9 +3,12 @@ const router = require('express').Router();
 const { authController } = require('../controllers');
 
 const {
-    isUserEmail,
-    validateData
-} = require('../middlewares/auth.middleware');
+    authMiddleware
+} = require('../middlewares');
+
+const {
+    validateData, isUserEmail
+} = authMiddleware;
 
 router.get('/', authController.showForm);
 router.post('/', validateData, isUserEmail, authController.loginUser);

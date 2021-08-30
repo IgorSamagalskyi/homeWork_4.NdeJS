@@ -1,7 +1,9 @@
 const { userServices } = require('../services');
 const {
     UPDATED_USER,
-    DELETED_USER
+    DELETED_USER,
+    CREATE_OR_UPDATE,
+    DELETE
 } = require('../config/messages');
 const passwordService = require('../services/password.services');
 const { userNormalizator } = require('../utils/user.util');
@@ -16,7 +18,7 @@ const {
 module.exports = {
     getUsers: async (req, res, next) => {
         try {
-            const allUsers = await readAllUsers(req.body);
+            const allUsers = await readAllUsers(req.query);
 
             res.json(allUsers);
         } catch (e) {
@@ -37,7 +39,7 @@ module.exports = {
 
             const userToReturn = userNormalizator(createUser);
 
-            res.json(userToReturn);
+            res.status(CREATE_OR_UPDATE).json(userToReturn);
         } catch (e) {
             next(e);
         }
@@ -57,7 +59,7 @@ module.exports = {
 
             await updateUser(user_id, req.body);
 
-            res.json(UPDATED_USER);
+            res.status(CREATE_OR_UPDATE).json(UPDATED_USER);
         } catch (e) {
             next(e);
         }
@@ -69,7 +71,7 @@ module.exports = {
 
             await deleteUser(user_id);
 
-            res.json(DELETED_USER);
+            res.status(DELETE).json(DELETED_USER);
         } catch (e) {
             next(e);
         }

@@ -13,7 +13,7 @@ module.exports = {
 
     loginUser: async (req, res, next) => {
         try {
-            const { user, password } = req.body;
+            const { user, password } = req;
 
             const userResponse = await compare(user.password, password);
 

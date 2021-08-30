@@ -9,6 +9,6 @@ module.exports = {
             delete userToNormalize[field];
         });
 
-        return userToNormalize;
+        return userToNormalize.toJSON();
     }
 };

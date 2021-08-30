@@ -1,8 +1,7 @@
 const UserModel = require('../dataBase/Users');
 const ErrorHandler = require('../errorHandler/ErrorHandler');
-const userValidator = require('../validators/user.validator');
+const userValidator = require('../validators');
 const {
-    EMPTY_FIELDS,
     EMAIL_EXIST,
     USER_NOT_FOUND
 } = require('../config/messages');
@@ -29,23 +28,6 @@ module.exports = {
         }
     },
 
-    isUserValid: (req, res, next) => {
-        try {
-            const {
-                name,
-                email
-            } = req.body;
-
-            if (!name || !email) {
-                throw new ErrorHandler(BAD_REQUEST, EMPTY_FIELDS);
-            }
-
-            next();
-        } catch (e) {
-            next(e);
-        }
-    },
-
     isUserExist: async (req, res, next) => {
         try {
             const { user_id } = req.params;
@@ -56,7 +38,7 @@ module.exports = {
                 throw new ErrorHandler(NOT_FOUND, USER_NOT_FOUND);
             }
 
-            req.user = currentUser.toObject();
+            req.user = currentUser;
             next();
         } catch (e) {
             next(e);
@@ -65,7 +47,7 @@ module.exports = {
 
     validateUserBody: (req, res, next) => {
         try {
-            const { error } = userValidator.createUserValidator.validate(req.body);
+            const { error } = userValidator.userValidator.createUserValidator.validate(req.body);
 
             if (error) {
                 throw new ErrorHandler(BAD_REQUEST, error.details[0].message);
@@ -79,7 +61,7 @@ module.exports = {
 
     validateUserBodyUpdate: (req, res, next) => {
         try {
-            const { error } = userValidator.updateUser.validate(req.body);
+            const { error } = userValidator.userValidator.updateUser.validate(req.body);
 
             if (error) {
                 throw new ErrorHandler(BAD_REQUEST, error.details[0].message);

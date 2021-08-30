@@ -1,9 +1,9 @@
 const ErrorHandler = require('../errorHandler/ErrorHandler');
 const { authServices } = require('../services');
-const { authValidator } = require('../validators/auth.validator');
+const { authValidator } = require('../validators');
 const {
     BAD_REQUEST,
-    NO_SUCH_EMAIL
+    WRONG_PASSWORD_OR_EMAIL
 } = require('../config/statusСodes');
 
 module.exports = {
@@ -14,9 +14,9 @@ module.exports = {
             const isUserPresent = await authServices.findByEmail({ email });
 
             if (!isUserPresent) {
-                throw new ErrorHandler(BAD_REQUEST, NO_SUCH_EMAIL);
+                throw new ErrorHandler(BAD_REQUEST, WRONG_PASSWORD_OR_EMAIL);
             }
-            req.body.user = isUserPresent.toObject();
+            req.user = isUserPresent;
 
             next();
         } catch (e) {
@@ -26,7 +26,7 @@ module.exports = {
 
     validateData: (req, res, next) => {
         try {
-            const { error } = authValidator.validate(req.body);
+            const { error } = authValidator.authValidator.validate(req.body);
 
             if (error) {
                 throw new ErrorHandler(BAD_REQUEST, error.details[0].message);
