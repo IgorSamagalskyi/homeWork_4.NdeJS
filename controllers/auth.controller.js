@@ -1,4 +1,4 @@
-const { compare } = require('../services/password.services');
+const { passwordServices } = require('../services');
 const { FORM } = require('../config/messages');
 const { userNormalizator } = require('../utils/user.util');
 
@@ -13,11 +13,12 @@ module.exports = {
 
     loginUser: async (req, res, next) => {
         try {
-            const { user, password } = req;
+            const { user } = req;
+            const { password } = req.body;
 
-            const userResponse = await compare(user.password, password);
+            await passwordServices.compare(user.password, password);
 
-            const userToReturn = userNormalizator(userResponse);
+            const userToReturn = userNormalizator(user);
 
             res.json(userToReturn);
         } catch (e) {

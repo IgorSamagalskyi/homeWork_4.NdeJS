@@ -1,10 +1,12 @@
 const { userServices } = require('../services');
 const {
     UPDATED_USER,
-    DELETED_USER,
+    DELETED_USER
+} = require('../config/messages');
+const {
     CREATE_OR_UPDATE,
     DELETE
-} = require('../config/messages');
+} = require('../config/statusСodes');
 const passwordService = require('../services/password.services');
 const { userNormalizator } = require('../utils/user.util');
 
@@ -19,6 +21,7 @@ module.exports = {
     getUsers: async (req, res, next) => {
         try {
             const allUsers = await readAllUsers(req.query);
+            // const normalizedUsers = allUsers.map((user) => userNormalizator(user));
 
             res.json(allUsers);
         } catch (e) {

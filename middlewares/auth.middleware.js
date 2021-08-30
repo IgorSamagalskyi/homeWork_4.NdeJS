@@ -29,7 +29,7 @@ module.exports = {
             const { error } = authValidator.authValidator.validate(req.body);
 
             if (error) {
-                throw new ErrorHandler(BAD_REQUEST, error.details[0].message);
+                throw new ErrorHandler(BAD_REQUEST, WRONG_PASSWORD_OR_EMAIL);
             }
 
             next();
