@@ -1,5 +1,10 @@
 const { userServices } = require('../services');
-const { UPDATED_USER, DELETED_USER } = require('../config/messages');
+const {
+    UPDATED_USER,
+    DELETED_USER
+} = require('../config/messages');
+const passwordService = require('../services/password.services');
+const { userNormalizator } = require('../utils/user.util');
 
 const {
     createNewUser,
@@ -21,9 +26,18 @@ module.exports = {
 
     postCreateUser: async (req, res, next) => {
         try {
-            const createUser = await createNewUser(req.body);
+            const { password } = req.body;
 
-            res.json(createUser);
+            const hashedPassword = await passwordService.hash(password);
+
+            const createUser = await createNewUser({
+                ...req.body,
+                password: hashedPassword
+            });
+
+            const userToReturn = userNormalizator(createUser);
+
+            res.json(userToReturn);
         } catch (e) {
             next(e);
         }
@@ -42,6 +56,7 @@ module.exports = {
             const { user_id } = req.params;
 
             await updateUser(user_id, req.body);
+
             res.json(UPDATED_USER);
         } catch (e) {
             next(e);
@@ -53,15 +68,10 @@ module.exports = {
             const { user_id } = req.params;
 
             await deleteUser(user_id);
+
             res.json(DELETED_USER);
         } catch (e) {
             next(e);
         }
     }
 };
-// if (!repeatEmail) {
-//     users.push(req.body);
-//     await createNewUser(users);
-//     res.redirect('/login');
-// }
-// res.status(401).send('This email is already registered');

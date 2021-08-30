@@ -1,5 +1,6 @@
 const UserModel = require('../dataBase/Users');
 const ErrorHandler = require('../errorHandler/ErrorHandler');
+const userValidator = require('../validators/user.validator');
 const {
     EMPTY_FIELDS,
     EMAIL_EXIST,
@@ -55,7 +56,35 @@ module.exports = {
                 throw new ErrorHandler(NOT_FOUND, USER_NOT_FOUND);
             }
 
-            req.user = currentUser;
+            req.user = currentUser.toObject();
+            next();
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    validateUserBody: (req, res, next) => {
+        try {
+            const { error } = userValidator.createUserValidator.validate(req.body);
+
+            if (error) {
+                throw new ErrorHandler(BAD_REQUEST, error.details[0].message);
+            }
+
+            next();
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    validateUserBodyUpdate: (req, res, next) => {
+        try {
+            const { error } = userValidator.updateUser.validate(req.body);
+
+            if (error) {
+                throw new ErrorHandler(BAD_REQUEST, error.details[0].message);
+            }
+
             next();
         } catch (e) {
             next(e);
