@@ -3,5 +3,6 @@ module.exports = {
     UNAUTHORIZED_ERROR: 401,
     NOT_FOUND: 404,
     CREATE_OR_UPDATE: 201,
-    DELETE: 204
+    DELETE: 204,
+    SERVER_ERROR: 500
 };

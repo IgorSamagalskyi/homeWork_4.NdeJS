@@ -10,9 +10,13 @@ const mongoose = require('mongoose');
 
 const app = express();
 
-const { PORT, MONGODB_PORT } = require('./config/variables');
 const {
-   NOT_FOUND
+    PORT,
+    MONGODB_PORT
+} = require('./config/variables');
+const {
+    NOT_FOUND,
+    SERVER_ERROR
 } = require('./config/statusСodes');
 
 mongoose.connect(MONGODB_PORT);
@@ -43,7 +47,7 @@ app.listen(PORT, () => {
 
 function _notFoundError(err, req, res, next) {
     next({
-        status: err.status || 404,
+        status: err.status || NOT_FOUND,
         message: err.message || NOT_FOUND
     });
 }
@@ -51,7 +55,7 @@ function _notFoundError(err, req, res, next) {
 // eslint-disable-next-line no-unused-vars
 function _errorHandler(err, req, res, next) {
     res
-        .status(err.status || 500)
+        .status(err.status || SERVER_ERROR)
         .json({
             message: err.message
         });
