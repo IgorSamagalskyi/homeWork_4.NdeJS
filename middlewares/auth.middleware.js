@@ -2,9 +2,11 @@ const ErrorHandler = require('../errorHandler/ErrorHandler');
 const { authServices } = require('../services');
 const { authValidator } = require('../validators');
 const {
-    BAD_REQUEST,
-    WRONG_PASSWORD_OR_EMAIL
+    BAD_REQUEST
 } = require('../config/statusСodes');
+const {
+    WRONG_PASSWORD_OR_EMAIL
+} = require('../config/messages');
 
 module.exports = {
     isUserEmail: async (req, res, next) => {
