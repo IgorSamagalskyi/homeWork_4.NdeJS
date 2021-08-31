@@ -26,11 +26,13 @@ app.use(express.urlencoded({ extended: true }));
 
 const {
     userRouter,
-    authRouter
+    authRouter,
+    carRouter
 } = require('./router');
 
 app.use('/users', userRouter);
 app.use('/auth', authRouter);
+app.use('/car', carRouter);
 app.use('*', _notFoundError);
 app.use(_errorHandler);
 
