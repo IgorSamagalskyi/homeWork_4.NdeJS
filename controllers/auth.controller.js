@@ -1,11 +1,11 @@
 const { passwordServices } = require('../services');
-const { FORM } = require('../config/messages');
+const { messages } = require('../config');
 const { userNormalizator } = require('../utils/user.util');
 
 module.exports = {
     showForm: (req, res, next) => {
         try {
-            res.json(FORM);
+            res.json(messages.FORM);
         } catch (e) {
             next(e);
         }

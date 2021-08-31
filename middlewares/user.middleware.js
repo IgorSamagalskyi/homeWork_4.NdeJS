@@ -1,25 +1,22 @@
-const UserModel = require('../dataBase/Users');
+const { UsersModel } = require('../dataBase');
 const ErrorHandler = require('../errorHandler/ErrorHandler');
-const userValidator = require('../validators');
+const { userValidator } = require('../validators');
 const {
-    EMAIL_EXIST,
-    USER_NOT_FOUND
-} = require('../config/messages');
+    messages
+} = require('../config');
 const {
-    BAD_REQUEST,
-    UNAUTHORIZED_ERROR,
-    NOT_FOUND
-} = require('../config/statusСodes');
+    status
+} = require('../config');
 
 module.exports = {
     isEmail: async (req, res, next) => {
         try {
             const { email } = req.body;
 
-            const isEmailExist = await UserModel.findOne({ email });
+            const isEmailExist = await UsersModel.findOne({ email });
 
             if (isEmailExist) {
-                throw new ErrorHandler(UNAUTHORIZED_ERROR, EMAIL_EXIST);
+                throw new ErrorHandler(status.UNAUTHORIZED_ERROR, messages.EMAIL_EXIST);
             }
 
             next();
@@ -32,10 +29,10 @@ module.exports = {
         try {
             const { user_id } = req.params;
 
-            const currentUser = await UserModel.findById(user_id);
+            const currentUser = await UsersModel.findById(user_id);
 
             if (!currentUser) {
-                throw new ErrorHandler(NOT_FOUND, USER_NOT_FOUND);
+                throw new ErrorHandler(status.NOT_FOUND, messages.USER_NOT_FOUND);
             }
 
             req.user = currentUser;
@@ -47,10 +44,10 @@ module.exports = {
 
     validateUserBody: (req, res, next) => {
         try {
-            const { error } = userValidator.userValidator.createUserValidator.validate(req.body);
+            const { error } = userValidator.createUserValidator.validate(req.body);
 
             if (error) {
-                throw new ErrorHandler(BAD_REQUEST, error.details[0].message);
+                throw new ErrorHandler(status.BAD_REQUEST, error.details[0].message);
             }
 
             next();
@@ -61,10 +58,10 @@ module.exports = {
 
     validateUserBodyUpdate: (req, res, next) => {
         try {
-            const { error } = userValidator.userValidator.updateUser.validate(req.body);
+            const { error } = userValidator.updateUser.validate(req.body);
 
             if (error) {
-                throw new ErrorHandler(BAD_REQUEST, error.details[0].message);
+                throw new ErrorHandler(status.BAD_REQUEST, error.details[0].message);
             }
 
             next();

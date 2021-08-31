@@ -1,4 +1,4 @@
-const UsersModel = require('../dataBase/Users');
+const { UsersModel } = require('../dataBase');
 
 module.exports = {
     readAllUsers: (arrUsers) => UsersModel.find(arrUsers),

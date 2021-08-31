@@ -1,6 +1,8 @@
 const Joi = require('joi');
 
-const { PASSWORD_REGEXP, EMAIL_REGEXP } = require('../config/const');
+const { constConfig } = require('../config');
+
+const { EMAIL_REGEXP, PASSWORD_REGEXP } = constConfig;
 
 const authValidator = Joi.object({
     name: Joi.string().alphanum().min(2).max(30)

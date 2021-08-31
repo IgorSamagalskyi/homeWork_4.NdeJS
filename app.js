@@ -8,16 +8,15 @@
 const express = require('express');
 const mongoose = require('mongoose');
 
+require('dotenv').config();
+
 const app = express();
 
 const {
-    PORT,
-    MONGODB_PORT
-} = require('./config/variables');
-const {
-    NOT_FOUND,
-    SERVER_ERROR
-} = require('./config/statusСodes');
+    messages: { NOT_FOUND_MESSEGES },
+    status: { NOT_FOUND, SERVER_ERROR },
+    variables: { PORT, MONGODB_PORT }
+} = require('./config');
 
 mongoose.connect(MONGODB_PORT);
 
@@ -50,7 +49,7 @@ app.listen(PORT, () => {
 function _notFoundError(err, req, res, next) {
     next({
         status: err.status || NOT_FOUND,
-        message: err.message || NOT_FOUND
+        message: err.message || NOT_FOUND_MESSEGES
     });
 }
 

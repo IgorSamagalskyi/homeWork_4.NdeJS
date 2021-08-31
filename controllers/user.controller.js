@@ -1,13 +1,11 @@
 const { userServices } = require('../services');
 const {
-    UPDATED_USER,
-    DELETED_USER
-} = require('../config/messages');
+    messages
+} = require('../config');
 const {
-    CREATE_OR_UPDATE,
-    DELETE
-} = require('../config/statusСodes');
-const passwordService = require('../services/password.services');
+    status
+} = require('../config');
+const { passwordServices } = require('../services');
 const { userNormalizator } = require('../utils/user.util');
 
 const {
@@ -20,10 +18,10 @@ const {
 module.exports = {
     getUsers: async (req, res, next) => {
         try {
-            const allUsers = await readAllUsers(req.query);
-            // const normalizedUsers = allUsers.map((user) => userNormalizator(user));
+            const getAllUsers = await readAllUsers(req.query);
+            const userToReturn = getAllUsers.map((user) => userNormalizator(user));
 
-            res.json(allUsers);
+            res.json(userToReturn);
         } catch (e) {
             next(e);
         }
@@ -33,7 +31,7 @@ module.exports = {
         try {
             const { password } = req.body;
 
-            const hashedPassword = await passwordService.hash(password);
+            const hashedPassword = await passwordServices.hash(password);
 
             const createUser = await createNewUser({
                 ...req.body,
@@ -42,7 +40,7 @@ module.exports = {
 
             const userToReturn = userNormalizator(createUser);
 
-            res.status(CREATE_OR_UPDATE).json(userToReturn);
+            res.status(status.CREATE_OR_UPDATE).json(userToReturn);
         } catch (e) {
             next(e);
         }
@@ -62,7 +60,7 @@ module.exports = {
 
             await updateUser(user_id, req.body);
 
-            res.status(CREATE_OR_UPDATE).json(UPDATED_USER);
+            res.status(status.CREATE_OR_UPDATE).json(messages.UPDATED_USER);
         } catch (e) {
             next(e);
         }
@@ -74,7 +72,7 @@ module.exports = {
 
             await deleteUser(user_id);
 
-            res.status(DELETE).json(DELETED_USER);
+            res.status(status.DELETE).json(messages.DELETED_USER);
         } catch (e) {
             next(e);
         }
