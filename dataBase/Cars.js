@@ -3,15 +3,15 @@ const {
     model
 } = require('mongoose');
 
-const { carModelsEnum } = require('../config');
-
 const {
-    MERCEDES,
-    BMW,
-    PORSCHE,
-    MAZDA,
-    TESLA
-} = carModelsEnum;
+    carModelsEnum: {
+        MERCEDES,
+        BMW,
+        PORSCHE,
+        MAZDA,
+        TESLA
+    }
+} = require('../config');
 
 const carSchema = new Schema({
     model: {

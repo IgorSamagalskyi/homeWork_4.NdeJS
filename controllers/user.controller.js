@@ -1,19 +1,24 @@
-const { userServices } = require('../services');
 const {
-    messages
-} = require('../config');
+    userServices: {
+        createNewUser,
+        readAllUsers,
+        updateUser,
+        deleteUser
+    },
+    passwordServices
+} = require('../services');
 const {
-    status
+    messages: {
+        UPDATED_USER,
+        DELETED_USER
+    },
+    status: {
+        DELETE,
+        CREATE_OR_UPDATE
+    }
 } = require('../config');
-const { passwordServices } = require('../services');
-const { userNormalizator } = require('../utils/user.util');
 
-const {
-    createNewUser,
-    readAllUsers,
-    updateUser,
-    deleteUser
-} = userServices;
+const { userNormalizator } = require('../utils/user.util');
 
 module.exports = {
     getUsers: async (req, res, next) => {
@@ -40,7 +45,7 @@ module.exports = {
 
             const userToReturn = userNormalizator(createUser);
 
-            res.status(status.CREATE_OR_UPDATE).json(userToReturn);
+            res.status(CREATE_OR_UPDATE).json(userToReturn);
         } catch (e) {
             next(e);
         }
@@ -60,7 +65,7 @@ module.exports = {
 
             await updateUser(user_id, req.body);
 
-            res.status(status.CREATE_OR_UPDATE).json(messages.UPDATED_USER);
+            res.status(CREATE_OR_UPDATE).json(UPDATED_USER);
         } catch (e) {
             next(e);
         }
@@ -72,7 +77,7 @@ module.exports = {
 
             await deleteUser(user_id);
 
-            res.status(status.DELETE).json(messages.DELETED_USER);
+            res.status(DELETE).json(DELETED_USER);
         } catch (e) {
             next(e);
         }

@@ -1,9 +1,11 @@
 const Joi = require('joi');
 
-const { constConfig } = require('../config');
-
-const { CURRENT_YEAR } = constConfig;
-const { carModelsEnum } = require('../config');
+const {
+    constConfig: {
+        CURRENT_YEAR
+    },
+    carModelsEnum
+} = require('../config');
 
 const createCarValidator = Joi.object({
     model: Joi.string().allow(...Object.values(carModelsEnum)).required(),

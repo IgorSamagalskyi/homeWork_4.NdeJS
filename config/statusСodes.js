@@ -4,5 +4,6 @@ module.exports = {
     NOT_FOUND: 404,
     CREATE_OR_UPDATE: 201,
     DELETE: 204,
-    SERVER_ERROR: 500
+    SERVER_ERROR: 500,
+    FORBIDDEN: 403
 };

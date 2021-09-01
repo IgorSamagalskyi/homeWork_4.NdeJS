@@ -3,12 +3,11 @@ const router = require('express').Router();
 const { authController } = require('../controllers');
 
 const {
-    authMiddleware
+    authMiddleware: {
+        validateData,
+        isUserEmail
+    }
 } = require('../middlewares');
-
-const {
-    validateData, isUserEmail
-} = authMiddleware;
 
 router.get('/', authController.showForm);
 router.post('/', validateData, isUserEmail, authController.loginUser);

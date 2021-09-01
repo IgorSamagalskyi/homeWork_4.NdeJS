@@ -1,10 +1,3 @@
-// Вам необхідно покрити всі місця, де це необхідно валідаторами JOI (query, params, body).
-//
-//     Зробити хешування паролів
-//
-// Зробити заготовку для флоу аутернтифікації. Тобто роут, контроллер, мідлвари і так далі
-// https://www.youtube.com/watch?v=NO8rRUk_G_I&t=5700s
-
 const express = require('express');
 const mongoose = require('mongoose');
 
@@ -13,7 +6,7 @@ require('dotenv').config();
 const app = express();
 
 const {
-    messages: { NOT_FOUND_MESSEGES },
+    messages: { NOT_FOUND_MESSAGES },
     status: { NOT_FOUND, SERVER_ERROR },
     variables: { PORT, MONGODB_PORT }
 } = require('./config');
@@ -31,7 +24,7 @@ const {
 
 app.use('/users', userRouter);
 app.use('/auth', authRouter);
-app.use('/car', carRouter);
+app.use('/cars', carRouter);
 app.use('*', _notFoundError);
 app.use(_errorHandler);
 
@@ -49,7 +42,7 @@ app.listen(PORT, () => {
 function _notFoundError(err, req, res, next) {
     next({
         status: err.status || NOT_FOUND,
-        message: err.message || NOT_FOUND_MESSEGES
+        message: err.message || NOT_FOUND_MESSAGES
     });
 }
 

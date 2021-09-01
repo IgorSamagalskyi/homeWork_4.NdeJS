@@ -1,18 +1,28 @@
-const { carServices } = require('../services');
-
 const {
-    createNewCar,
-    readAllCars,
-    updateCar,
-    deleteCar
-} = carServices;
+    carServices: {
+        createNewCar,
+        readAllCars,
+        updateCar,
+        deleteCar
+    }
+} = require('../services');
+const {
+    status: {
+        CREATE_OR_UPDATE
+    },
+    messages: {
+        UPDATED_CAR
+    }
+} = require('../config');
+const { userNormalizator } = require('../utils/user.util');
 
 module.exports = {
     getCars: async (req, res, next) => {
         try {
             const allCars = await readAllCars(req.body);
+            const userToReturn = allCars.map((car) => userNormalizator(car));
 
-            res.json(allCars);
+            res.json(userToReturn);
         } catch (e) {
             next(e);
         }
@@ -41,7 +51,8 @@ module.exports = {
             const { car_id } = req.params;
 
             await updateCar(car_id, req.body);
-            res.json('Car updated');
+
+            res.status(CREATE_OR_UPDATE).json(UPDATED_CAR);
         } catch (e) {
             next(e);
         }
