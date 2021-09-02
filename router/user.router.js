@@ -2,7 +2,13 @@ const router = require('express')
     .Router();
 
 const { userController } = require('../controllers');
-
+const {
+    constConfig: {
+        USER_ID,
+        PARAMS,
+        DB_ID_FIELD
+    }
+} = require('../config');
 const {
     userMiddleware: {
         validateUserBody,
@@ -14,28 +20,20 @@ const {
 } = require('../middlewares');
 
 router.get('/', userController.getUsers);
+
 router.post('/', validateUserBody, isEmail, userController.postCreateUser);
-router.get('/:user_id', getUserByDynamicParam(
-    'user_id',
-    'params',
-    '_id'
-),
-checkUserRoleMiddleware([
-    'admin',
-    'user'
-]),
-userController.getUserId);
-router.put('/:user_id', validateUserBodyUpdate, getUserByDynamicParam(
-    'user_id',
-    'params',
-    '_id'
-), userController.updateUser);
+
+router.get('/:user_id',
+    getUserByDynamicParam(USER_ID, PARAMS, '_id'),
+    userController.getUserId);
+
+router.put('/:user_id', validateUserBodyUpdate,
+    getUserByDynamicParam(USER_ID, PARAMS, '_id'),
+    checkUserRoleMiddleware(['admin']),
+    userController.updateUser);
+
 router.delete('/:user_id',
-    getUserByDynamicParam(
-        'user_id',
-        'params',
-        '_id'
-    ),
+    getUserByDynamicParam(USER_ID, PARAMS, DB_ID_FIELD),
     checkUserRoleMiddleware(['admin']),
     userController.deleteUser);
 

@@ -1,3 +1,11 @@
+// не потрібно перевіряти name на auth
+//
+// всі дані які передаєш в мідлвари винеси в константи
+// 'user_id','params','_id' ...
+//
+// якщо роут доступний всім то немає сенсу перевіряти роль checkUserRoleMiddleware(['admin', 'user']),
+//     (йдеться про get('/:user_id'...) )
+
 const express = require('express');
 const mongoose = require('mongoose');
 

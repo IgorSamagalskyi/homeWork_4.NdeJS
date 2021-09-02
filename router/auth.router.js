@@ -9,7 +9,10 @@ const {
     }
 } = require('../middlewares');
 
-router.get('/', authController.showForm);
-router.post('/', validateData, isUserEmail, authController.loginUser);
+router.get('/',
+    authController.showForm);
+
+router.post('/', validateData, isUserEmail,
+    authController.loginUser);
 
 module.exports = router;
